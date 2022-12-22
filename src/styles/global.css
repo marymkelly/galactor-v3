@@ -1,0 +1,63 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@100;200;300;400;500;600;700;800;900&family=Questrial&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+	.range-slider {
+		@apply [&::-webkit-slider-thumb]:bg-sky-800 [&::-moz-range-thumb]:bg-sky-800 [&::-ms-thumb]:bg-sky-800 [&:focus:hover::-webkit-slider-thumb]:bg-sky-500 [&:focus:hover::-moz-range-thumb]:bg-sky-500 [&:focus:hover::-ms-thumb]:bg-sky-500  [&:hover::-webkit-slider-thumb]:bg-sky-700 [&:hover::-moz-range-thumb]:bg-sky-700 [&:hover::-ms-thumb]:bg-sky-700  [&:focus:hover::-webkit-slider-thumb]:border-sky-800 [&:focus:hover::-moz-range-thumb]:border-sky-800 [&:focus:hover::-ms-thumb]:border-sky-800  [&:focus::-webkit-slider-thumb]:border-2 [&:focus::-moz-range-thumb]:border-2 [&:focus::-ms-thumb]:border-2  [&::-webkit-slider-thumb]:rounded-full [&::-moz-range-thumb]:rounded-full [&::-ms-thumb]:rounded-full  [&::-webkit-slider-thumb]:w-[14px] [&::-moz-range-thumb]:w-[14px] [&::-ms-thumb]:w-[14px]  [&::-webkit-slider-thumb]:h-[14px] [&::-moz-range-thumb]:h-[14px] [&::-ms-thumb]:h-[14px] [&::-webkit-slider-thumb]:-mt-[6px] [&::-moz-range-thumb]:-mt-[6px] [&::-ms-thumb]:-mt-[6px] [&::-webkit-slider-runnable-track]:w-full [&::-moz-range-track]:w-full [&::-ms-track]:w-full  [&::-webkit-slider-runnable-track]:h-[3px] [&::-moz-range-track]:h-[3px] [&::-ms-track]:h-[3px] [&::-webkit-slider-runnable-track]:bg-emerald-600/50 [&::-moz-range-track]:bg-emerald-600/50 [&::-ms-track]:bg-emerald-600/50 [&::-ms-fill-lower]:bg-emerald-600/50 [&::-ms-fill-upper]:bg-emerald-600/50 [&::-webkit-slider-runnable-track]:rounded-full [&::-moz-range-track]:rounded-full [&::-ms-track]:rounded-full [&:focus:hover::-webkit-slider-runnable-track]:bg-emerald-600/80 [&:focus:hover::-moz-range-track]:bg-emerald-600/80 [&:focus:hover::-ms-track]:bg-emerald-600/80 [&:focus:hover::-ms-fill-lower]:bg-emerald-600/80  [&:focus:hover::-ms-fill-upper]:bg-emerald-600/80 [&:hover::-webkit-slider-runnable-track]:bg-emerald-500 [&:hover::-moz-range-track]:bg-emerald-500 [&:hover::-ms-track]:bg-emerald-500 [&:hover::-ms-fill-lower]:bg-emerald-500  [&:hover::-ms-fill-upper]:bg-emerald-500;
+	}
+}
+
+@layer utilities {
+	.test {
+		width: 100%;
+		height: 3px;
+		border-radius: 100%;
+		background-color: rgba(5 150 105, 0.5);
+	}
+}
+
+html,
+body {
+	padding: 0;
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+	width: 100%;
+	height: 100%;
+	min-width: 360px;
+	min-height: 100vh;
+	color: #111111;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+input[type="range"] {
+	-webkit-appearance: none;
+	width: 100%;
+	background: transparent;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+	-webkit-appearance: none;
+}
+
+input[type="range"]:focus {
+	outline: none;
+}
+
+input[type="range"]::-ms-track {
+	width: 100%;
+	cursor: pointer;
+	background: transparent;
+	border-color: transparent;
+	color: transparent;
+}
