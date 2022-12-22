@@ -12,10 +12,8 @@ const { getStars } = require("./lib/utils/stars.js");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
-//express
 app.use(express.static(path.join(__dirname, "public")));
 app.options("*", cors());
-//routes
 app.get("/", function (req, res) {
 	res.header("Access-Control-Allow-Origin", "*");
 	res.sendFile("index.html");
