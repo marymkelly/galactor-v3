@@ -1,6 +1,6 @@
 # Galactor III
 
-![Example Screenshot](https://github.com/marymkelly/galactor-v3/tree/main/public/img/example.png)
+![Example Screenshot](https://github.com/marymkelly/galactor-v3/blob/main/public/img/example.png)
 
 This project is an updated version to a previous project of mine named [Galactor](https://galactor.marykelly.tech) [(repository)](https://github.com/marymkelly/galactor-the-second), incorporating a 3D globe using [Globe.gl](https://github.com/vasturiano/react-globe.gl).  
 
