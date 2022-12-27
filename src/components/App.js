@@ -8,8 +8,8 @@ import { celestialToGeodeticCoords } from "../lib/utils/calculation.mjs";
 import { threeDMarker } from "../lib/mapMarker.js";
 
 const App = () => {
-	const EARTH_RADIUS_KM = 6371; // km
-	const SAT_SIZE = 80; // km
+	const EARTH_RADIUS_KM = 6371;
+	const STAR_SIZE = 80;
 	const time = new Date();
 
 	const globeEl = useRef();
@@ -17,7 +17,7 @@ const App = () => {
 	const timerRef = useRef();
 	const [globeRadius, setGlobeRadius] = useState();
 	const [globeContainer, setGlobeContainer] = useState({ width: 600, height: 1000 });
-	const [currentLocation, setCurrentLocation] = useState();
+	const [currentSearch, setCurrentSearch] = useState("");
 	const [locationMarkers, setLocationMarkers] = useState([{ lat: 28.4, lng: -80.64, size: 15 }]);
 	const [objectsData, setObjectsData] = useState([]);
 	const [altitudeAngle, setAltitudeAngle] = useState(30);
@@ -34,9 +34,9 @@ const App = () => {
 	}
 
 	function updateLocation(location) {
-		setCurrentLocation(location);
+		setCurrentSearch(location);
 		setLocationMarkers([{ ...locationMarkers[0], lng: location?.coords?.lng, lat: location?.coords?.lat }]);
-		setCurrentLocation(location.formattedLocation);
+		setCurrentSearch(location.formattedLocation);
 		globeEl.current.pointOfView({ lng: location?.coords?.lng, lat: location?.coords?.lat }, 1500);
 		aladinEl.current.gotoRaDec(location?.coords?.celestial?.ra, location?.coords?.celestial?.dec);
 	}
@@ -80,7 +80,7 @@ const App = () => {
 		const ringMesh = new THREE.Mesh(ringGeometry, ringMaterial);
 		ringMesh.rotateX(90).rotateY(45).rotateZ(90);
 
-		const starGeometry = new THREE.OctahedronGeometry((SAT_SIZE * globeRadius) / EARTH_RADIUS_KM / 2, 0);
+		const starGeometry = new THREE.OctahedronGeometry((STAR_SIZE * globeRadius) / EARTH_RADIUS_KM / 2, 0);
 		const starMaterial = new THREE.MeshPhongMaterial({
 			color: "#dfdbc8",
 			emissive: "#007ab8",
@@ -138,7 +138,9 @@ const App = () => {
 		(async () => {
 			await axios({
 				method: "post",
-				url: "http://localhost:4000/api/location/geolocate",
+				// url: `${process.env.SERVER}/api/location/geolocate`,
+				// url: "http://127.0.0.1:5001/galactor-v3/us-central1/app/api/location/geolocate",
+				url: "https://us-central1-galactor-v3.cloudfunctions.net/app/api/location/geolocate",
 				data: {
 					location: "Cape Canaveral",
 				},
@@ -149,7 +151,10 @@ const App = () => {
 					setLoading(false);
 					return data;
 				})
-				.catch((err) => err);
+				.catch((err) => {
+					if (typeof err === "string") setError(err);
+					setLoading(false);
+				});
 		})();
 	}, []);
 
@@ -192,15 +197,20 @@ const App = () => {
 							if (!loading) setLoading(true);
 
 							const res = await axios
-								.post("http://localhost:4000/api/location/geolocate", {
-									location: currentLocation,
+								// .post(`${process.env.SERVER}/api/location/geolocate`, {
+								// .post("http://127.0.0.1:5001/galactor-v3/us-central1/app/api/location/geolocate", {
+								.post("https://us-central1-galactor-v3.cloudfunctions.net/app/api/location/geolocate", {
+									location: currentSearch,
 									qty: starQty,
 									altitude: altitudeAngle,
 								})
-								.catch((err) => err.response.data);
+								.catch((err) => {
+									return err.response.data;
+								});
 
 							if (res?.error) {
-								setError(res.error);
+								setError(res.error.status);
+								setLoading(false);
 							} else {
 								if (res.data.location) {
 									updateLocation(res.data.location);
@@ -214,16 +224,18 @@ const App = () => {
 								Current Location
 							</label>
 							<input
-								name='currentLocations'
+								name='currentLocation'
 								onChange={(e) => {
-									setCurrentLocation(e.target.value);
+									if (error) setError("");
+									setCurrentSearch(e?.target?.value || "");
 								}}
 								className={`w-full h-12 border border-opacity-30 border-emerald-800 bg-emerald-400 bg-opacity-50 focus:outline-[0px] placeholder:font-normal placeholder:text-slate-500 text-slate-800/90 text-lg font-medium focus:outline-offset-0 focus:border-cyan-600/80 ring-cyan-400 focus:ring-[1px] focus:ring-cyan-400 focus:border-[1.5px] focus:rounded-0 indent-3 ${
 									error ? "error:ring-rose-300 outline-rose-300" : ""
 								}`}
 								placeholder='Search Location'
-								value={currentLocation}
+								value={currentSearch}
 							/>
+							<p className={`${error ? "flex" : "hidden"} text-rose-500 text-sm mt-1`}>Error: {error}</p>
 						</div>
 						<div className='flex items-center mt-16'>
 							<label className='text-sm mr-4 opacity-70 whitespace-nowrap' htmlFor='starQty'>

@@ -15,6 +15,7 @@ module.exports = (env) => {
 		entry: ["react-hot-loader/patch", "./src/index.js"],
 		output: {
 			path: path.resolve(__dirname, "public/dist/"),
+			// path: path.resolve(__dirname, "functions/dist/"),
 			filename: "build.js",
 		},
 		mode: isProduction ? "production" : "development",
@@ -23,7 +24,7 @@ module.exports = (env) => {
 			static: "./public",
 			proxy: {
 				"/api": {
-					target: "http://localhost:4000",
+					target: "http://localhost:5001",
 				},
 			},
 		},
@@ -33,6 +34,16 @@ module.exports = (env) => {
 				timers: require.resolve("timers-browserify"),
 				buffer: require.resolve("buffer/"),
 				stream: require.resolve("stream-browserify"),
+				path: require.resolve("path-browserify"),
+				url: require.resolve("url/"),
+				util: require.resolve("util/"),
+				http: require.resolve("stream-http"),
+				crypto: require.resolve("crypto-browserify"),
+				zlib: require.resolve("browserify-zlib"),
+				assert: require.resolve("assert/"),
+				async_hooks: false,
+				net: false,
+				fs: false,
 			},
 		},
 
